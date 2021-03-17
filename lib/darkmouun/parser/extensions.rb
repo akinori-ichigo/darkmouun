@@ -46,7 +46,7 @@ module Kramdown
         warning("No or invalid attributes found in IAL/ALD content: #{str}") if attrs.length == 0
       end
 
-      ALD_TYPE_STYLE_ATTR = /%(#{ALD_ID_NAME}:)\s*?((?:\\\}|\\;|[^\};])*?;)/
+      ALD_TYPE_STYLE_ATTR = /%((?:--)?#{ALD_ID_NAME}:)\s*?((?:\\\}|\\;|[^\};])*?;)/
       remove_const(:ALD_TYPE_ANY)
       ALD_TYPE_ANY = /(?:\A|\s)(?:#{ALD_TYPE_KEY_VALUE_PAIR}|#{ALD_TYPE_STYLE_ATTR}|#{ALD_TYPE_REF}|#{ALD_TYPE_ID_OR_CLASS_MULTI})(?=\s|\Z)/
 
