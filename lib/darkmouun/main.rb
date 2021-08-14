@@ -80,16 +80,16 @@ module Darkmouun
     end
 
     def apply_mustache
-      begin
       @source = @source.gsub(/<<(.+?)>>\n((?:[# \-]*[\w_][\w\d_]*: *\n?(?: +.+\n)+)+)/) do |s|
-        obj_spot_template, data = (@templates[$1.to_sym]).new, $2
-        YAML.load_stream(data).compact.reduce(&:merge).each do |k, v|
-          obj_spot_template.define_singleton_method(k){ v }
+        begin
+          obj_spot_template, data = (@templates[$1.to_sym]).new, $2
+          YAML.load_stream(data).compact.reduce(&:merge).each do |k, v|
+            obj_spot_template.define_singleton_method(k){ v }
+          end
+          obj_spot_template.render + "\n"
+        rescue => e
+          raise e.class.new("\n#{e.message} in \"Mustache-process\" at *** #{s} ***\n")
         end
-        obj_spot_template.render + "\n"
-      end
-      rescue => e
-        raise e.class.new("\n#{e.message}\n\n>>> ERROR in \"Mustache-process\" <<<\nMaybe, incorrect tags of the template exist.\n")
       end
     end
 
