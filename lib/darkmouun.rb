@@ -1,7 +1,3 @@
-require "darkmouun/version"
-require "darkmouun/main"
+require_relative "darkmouun/version"
+require_relative "darkmouun/main"
 
-module Darkmouun
-  class Error < StandardError; end
-  # Your code goes here...
-end

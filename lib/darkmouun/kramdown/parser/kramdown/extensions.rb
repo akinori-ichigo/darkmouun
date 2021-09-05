@@ -1,11 +1,4 @@
 # -*- coding: utf-8 -*-
-#
-#--
-# Copyright (C) 2017 Akinori Ichigo <akinori.ichigo@gmail.com>
-#
-# This file is part of kramdown which is licensed under the MIT.
-#++
-#
 
 require 'kramdown'
 
@@ -13,8 +6,6 @@ module Kramdown
   module Parser
     class Kramdown
 
-      # Parse the string +str+ and extract all attributes and add all found attributes to the hash
-      # +opts+.
       def parse_attribute_list(str, opts)
         return if str.strip.empty? || str.strip == ':'
         style_attr = []

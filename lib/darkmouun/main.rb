@@ -1,23 +1,10 @@
+# -*- coding: utf-8 -*-
+
 require "mustache"
 require "Kramdown"
 require "htmlbeautifier"
 
-require "darkmouun/version"
-require "darkmouun/parser/extensions"
-require "darkmouun/parser/span"
-require "darkmouun/converter/span"
-
-module Kramdown
-  module Parser
-    class Kramdown
-      alias_method :super_initialize, :initialize
-      def initialize(source, options)
-        super_initialize(source, options)
-        @span_parsers.insert(5, :span)
-      end
-    end
-  end
-end
+require_relative "kramdown"
 
 module Darkmouun
   class << self
@@ -32,18 +19,7 @@ module Darkmouun
     def initialize(source, options ={}, converter = :html)
       @source, @options = source, options
       @templates = {}
-      begin
-        @converter = case converter
-        when String
-          ('to_' + converter).intern
-        when Symbol
-          ('to_' + (converter.to_s)).intern
-        else
-          Exception.new "Invalid converter: Neither Symbol nor String"
-        end
-      rescue => e
-        p e
-      end
+      @converter = ('to_' + (converter.to_s)).intern
     end
 
     def add_templates(dir, *tmpls)

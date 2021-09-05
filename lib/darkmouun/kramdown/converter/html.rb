@@ -1,11 +1,6 @@
 # -*- coding: utf-8 -*-
-#
-#--
-# copyright (c) 2017 akinori ichigo <akinori.ichigo@gmail.com>
 
-require 'kramdown/parser'
-require 'kramdown/converter'
-require 'kramdown/utils'
+require 'kramdown'
 
 module Kramdown
   module Converter
