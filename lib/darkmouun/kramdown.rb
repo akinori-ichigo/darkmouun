@@ -15,7 +15,7 @@ module Kramdown
       alias_method :super_initialize, :initialize
       def initialize(source, options)
         super_initialize(source, options)
-        @span_parsers.insert(5, :span)
+        @span_parsers[5] = :span
       end
     end
   end
