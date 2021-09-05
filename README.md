@@ -95,9 +95,9 @@ dkmn.convert    #=> <p>The Calculation:</p>
 
 Darkmouun has extended to kramdown. Extensions are below;
 
-1. **Plain Span element form.** `[[spanned phrase]]` is converted to `<span>spanned phrase</span>`.
+1. **Plain span element form.** `[spanned phrase]` is converted to `<span>spanned phrase</span>`.
 
-2. **Style attribute abbreviation form.** `%attritute_name:value;` in IAL is converted to `style="attribute_name:value;"`.<br/>**ex.** `{:%color:#ffffff; %font-weight:bold;}` -> `style="color:#ffffff; font-weight:bold;"`<br/>**ATTENSION:** Every attribute must be started from "`%`" and ended with "`;`".
+2. **Style IAL form.** `%attritute_name:value;` in IAL is converted to `style="attribute_name:value;"`.<br/>**ex.** `{:%color:#ffffff; %font-weight:bold;}` -> `style="color:#ffffff; font-weight:bold;"`<br/>**ATTENSION:** Every attribute must be started from "`%`" and ended with "`;`".
 
 ## Development
 
