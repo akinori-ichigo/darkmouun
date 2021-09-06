@@ -9,15 +9,5 @@ module Kramdown
   class Element
     CATEGORY[:span] = :span
   end
-
-  module Parser
-    class Kramdown
-      alias_method :super_initialize, :initialize
-      def initialize(source, options)
-        super_initialize(source, options)
-        @span_parsers[5] = :span
-      end
-    end
-  end
 end
 

@@ -16,7 +16,7 @@ module Kramdown
         # no nested links allowed
         if link_type == :a && (@tree.type == :img || @tree.type == :a ||
                                @stack.any? {|t, _| t && (t.type == :img || t.type == :a) })
-          add_text(result)
+          parse_span
           return
         end
         el = Element.new(link_type, nil, nil, location: start_line_number)
@@ -36,18 +36,14 @@ module Kramdown
 
         # reference style link or no link url
         if @src.scan(LINK_INLINE_ID_RE) || !@src.check(/\(/)
-          emit_warning = !@src[1]
           link_id = normalize_link_id(@src[1] || alt_text)
           if @link_defs.key?(link_id)
             link_def = @link_defs[link_id]
             add_link(el, link_def[0], link_def[1], alt_text,
                      link_def[2] && link_def[2].options[:ial])
           else
-            if emit_warning
-              warning("No link definition for link ID '#{link_id}' found on line #{start_line_number}")
-            end
             @src.revert_pos(saved_pos)
-            add_text(result)
+            parse_span
           end
           return
         end
