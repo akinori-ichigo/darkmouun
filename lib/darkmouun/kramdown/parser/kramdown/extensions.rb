@@ -1,9 +1,18 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8; frozen_string_literal: true -*-
+#
+#--
+# Copyright (C) 2009-2019 Thomas Leitner <t_leitner@gmx.at>
+#
+# This file is part of kramdown which is licensed under the MIT.
+#++
+#
 
 module Kramdown
   module Parser
     class Kramdown
 
+      # Parse the string +str+ and extract all attributes and add all found attributes to the hash
+      # +opts+.
       def parse_attribute_list(str, opts)
         return if str.strip.empty? || str.strip == ':'
         style_attr = []
@@ -14,8 +23,7 @@ module Kramdown
           elsif id_and_or_class
             id_and_or_class.scan(ALD_TYPE_ID_OR_CLASS).each do |id_attr, class_attr|
               if class_attr
-                opts[IAL_CLASS_ATTR] = (opts[IAL_CLASS_ATTR] || '') << " #{class_attr}"
-                opts[IAL_CLASS_ATTR].lstrip!
+                opts[IAL_CLASS_ATTR] = "#{opts[IAL_CLASS_ATTR]} #{class_attr}".lstrip
               else
                 opts['id'] = id_attr
               end
@@ -32,7 +40,7 @@ module Kramdown
           end
         end
         (opts['style'] = style_attr.join(' ')) unless style_attr.empty?
-        warning("No or invalid attributes found in IAL/ALD content: #{str}") if attrs.length == 0
+        warning("No or invalid attributes found in IAL/ALD content: #{str}") if attrs.empty?
       end
 
       ALD_TYPE_STYLE_ATTR = /%((?:--)?#{ALD_ID_NAME}:)\s*?((?:\\\}|\\;|[^\};])*?;)/
