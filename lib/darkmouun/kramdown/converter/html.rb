@@ -6,7 +6,11 @@ module Kramdown
   module Converter
     class Html
       def convert_span(el, indent)
-        format_as_span_html('span', el.attr, inner(el, indent))
+        if el.attr.empty?
+          "[#{inner(el, indent)}]"
+        else
+          format_as_span_html('span', el.attr, inner(el, indent))
+        end
       end
     end
   end
