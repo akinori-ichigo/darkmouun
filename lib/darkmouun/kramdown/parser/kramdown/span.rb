@@ -11,9 +11,7 @@ module Kramdown
         start_line_number = @src.current_line_number
         saved_pos = @src.save_pos
 
-        span_start = /(?:\[\s*?)/
-        result = @src.scan(span_start)
-        stop_re = /(?:\s*?\])/
+        stop_re = /(\](?=\{\:))/
 
         el = Element.new(:span, nil, nil, :location => start_line_number)
         found = parse_spans(el, stop_re) do
@@ -25,8 +23,7 @@ module Kramdown
           @tree.children << el
         else
           @src.revert_pos(saved_pos)
-          @src.pos += result.length
-          add_text(result)
+          add_text('[')
         end
       end
 
