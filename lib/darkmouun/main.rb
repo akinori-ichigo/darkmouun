@@ -64,7 +64,7 @@ module Darkmouun
           end
           obj_spot_template.render + "\n"
         rescue => e
-          raise e.class.new("\n#{e.message} in \"Mustache-process\" at *** #{s} ***\n")
+          e.class.new("**ERROR in Mustache-process:**\n\n#{e.message}\n\nThis was caused by the following defnition.\n\n    #{s}\n\n")
         end
       end
     end
