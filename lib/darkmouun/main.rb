@@ -16,31 +16,27 @@ module Darkmouun
   class Darkmouun
     attr_accessor :pre_process, :post_process
   
-    def initialize(source, options ={}, converter = :html)
-      @source, @options = source, options
+    def initialize
       @templates = {}
-      @converter = ('to_' + (converter.to_s)).intern
     end
 
-    def add_templates(dir, *tmpls)
+    def add_template(tmpl)
       # for Mustache
-      tmpls.each do |tmpl|
-        abs_path = dir + tmpl
-        tmpl_module = Module.new
-        tmpl_module.module_eval(File.read(abs_path), abs_path)
-        tmpl_module.constants.each do |i|
-          c = tmpl_module.const_get(i)
-          if c.is_a?(Class) && c.superclass == Mustache
-            @templates[i] = c
-          end
+      tmpl_module = Module.new
+      tmpl_module.module_eval(File.read(tmpl), tmpl)
+      tmpl_module.constants.each do |i|
+        c = tmpl_module.const_get(i)
+        if c.is_a?(Class) && c.superclass == Mustache
+          @templates[i] = c
         end
       end
     end
 
-    def convert
+    def convert(source, options = {}, converter = :to_html)
+      @source = source
       do_pre_process
       apply_mustache
-      apply_kramdown
+      apply_kramdown(options, converter)
       do_post_process
       beautify
     end
@@ -69,9 +65,9 @@ module Darkmouun
       end
     end
 
-    def apply_kramdown
+    def apply_kramdown(options, converter)
       begin
-        @result = Kramdown::Document.new(@source, @options).send(@converter)
+        @result = Kramdown::Document.new(@source, options).send(converter)
       rescue => e
         raise e.class.new("\n#{e.message}\n\n>>> ERROR in \"kramdown-process\" <<<\n")
       end
