@@ -28,40 +28,40 @@ Or install it yourself as:
 
 ## Usage
 
-Darkmouun.document.new takes 3 arguments.
+Darkmouun instance is made by `Darkmouun.document.new` with no arguments.
 
-* 1st arg: Target Markdown file name
-* 2nd arg: Kramdown's parser option (cf. [kramdown's usage](https://kramdown.gettalong.org/documentation.html#usage))
-* 3rd arg: Kramdown's converter name(ex. if converter class name is ItlHtml, converter name is to_itl_html.)
+(Darkmouun instance)`.convert` makes a HTML document from the markdown text and takes 3 arguments.
 
-2nd and 3rd argument has default value. 
+* 1st arg: Markdown text (String)
+* 2nd arg: Kramdown's parser option (Hash) (cf. [kramdown's usage](https://kramdown.gettalong.org/documentation.html#usage))
+* 3rd arg: Kramdown's converter name (Symbol)
 
-* 2nd arg: {}
-* 3rd arg: to_html
+2nd and 3rd argument have default values. 
 
-(Darkmouun instance).convert makes a HTML document from the target markdown document.
+* 2nd arg: `{}`
+* 3rd arg: `:to_html`
 
-You can define pre_process and post_process as a Proc object.
+You can define pre_process and post_process as Proc object.
 
 ```
-dkmn = Darkmouun.document.new("MARKDOWN DOCUMENT", {:auto_ids => false})
+dkmn = Darkmouun.document.new
 dkmn.pre_process = lambda do |i|
   i.gsub!(/MARKDOWN/, "Markdown")
 end
 dkmn.post_process = lambda do |i|
   i.gsub!(/DOCUMENT/, "Document")
 end
-dkmn.convert  #=> "<p>Markdown Document</p>
+dkmn.convert("MARKDOWN DOCUMENT")  #=> "<p>Markdown Document</p>
 ```
 
 You can write the parts that Mustache extracts with templates in your markdown document.
 Template is written as Ruby script, and it is made to define as the subclass of Mustache class.
 
-The part of template extacting in the markdown document starts '<<template_name>>'.
+The part of template extacting in the markdown document starts `<<template_name>>`.
 Parameters of the template are written below with YAML format.
 
 ```
-# Template file 'template_a.rb'
+# Template file 'templates/template_a.rb'
 
 class Template_A < Mustache
   Template = <<EOS
@@ -76,19 +76,16 @@ end
 ```
 # converting code
 
-dkmn = Darkmouun.document.new(<<BODY, {:auto_ids => false, :input => 'sekd'}, :se_html)
+dkmn = Darkmouun.document.new
+dkmn.add_template("#{__dir__}/templates/template_a.rb")
+dkmn.convert(<<BODY)
 The calculation:
 
 <<Template_A>>
 fig1: 1
 fig2: 2
-BODY
-
-dkmn.add_templates "#{__dir__}/templates/",  # 1st arg is the directory of templates.
-                   'template_a.rb'           # 2nd or later args are the files of templates.
-
-dkmn.convert    #=> <p>The Calculation:</p>
-                    <p>1 + 2 is 3.</p>
+BODY    #=> <p>The Calculation:</p>
+        #=> <p>1 + 2 is 3.</p>
 ```
 
 ## kramdown extensions
