@@ -55,7 +55,9 @@ module Darkmouun
       @source = @source.gsub(/<<(.+?)>>\n((?:\n|.)+?\n\n(?!    ))/) do |s|
         begin
           obj_spot_template = (@templates[$~[1].to_sym]).new
-          YAML.load($~[2].strip).compact.each do |k, v|
+          yaml = YAML.load($~[2].strip)
+          yaml = {$~[1].downcase => yaml} unless yaml.is_a?(Hash)
+          yaml.compact.each do |k, v|
             obj_spot_template.define_singleton_method(k){ v }
           end
           obj_spot_template.render + "\n"
