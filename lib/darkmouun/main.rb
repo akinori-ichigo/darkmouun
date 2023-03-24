@@ -52,7 +52,7 @@ module Darkmouun
     end
 
     def apply_mustache
-      @source = @source.gsub(/<<(.+?)>>\n((?:\n|.)+?\n\n(?!    ))/) do |s|
+      @source = @source.gsub(/<<(.+?)>>(\n\n|(?:\n|.)+?\n\n)/) do |s|
         begin
           obj_spot_template = (@templates[$~[1].to_sym]).new
           yaml = YAML.load($~[2].strip)
