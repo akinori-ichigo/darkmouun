@@ -26,7 +26,7 @@ module Darkmouun
       tmpl_module.module_eval(File.read(tmpl), tmpl)
       tmpl_module.constants.each do |i|
         c = tmpl_module.const_get(i)
-        if c.is_a?(Class) && c.superclass == Mustache
+        if c.is_a?(Class) && c.ancestors.include?(Mustache)
           @templates[i] = c
         end
       end
