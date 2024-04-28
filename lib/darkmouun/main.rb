@@ -60,7 +60,7 @@ module Darkmouun
           yaml.compact.each do |k, v|
             obj_spot_template.define_singleton_method(k){ v }
           end
-          obj_spot_template.render + "\n"
+          obj_spot_template.render + "\n\n"
         rescue => e
           e.class.new("**ERROR in Mustache-process:**\n\n#{e.message}\n\nThis was caused by the following defnition.\n\n    #{s}\n\n")
         end
